@@ -4,6 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class MicrophoneTest : MonoBehaviour {
 	
+	float[] samples = new float[1024];
 	float[] spectrum = new float[1024];
 	
 	// Use this for initialization
@@ -20,5 +21,8 @@ public class MicrophoneTest : MonoBehaviour {
 		for (int i = 0; i < 1023; i++) {
 			Debug.DrawLine(new Vector3(i, Mathf.Log10(spectrum[i]) + 10, 0), new Vector3(i + 1, Mathf.Log10(spectrum[i + 1]) + 10, 0), Color.red);
 		}
+		
+		audio.GetOutputData(samples, 0);
+		Debug.Log (samples[0]);
 	}
 }
