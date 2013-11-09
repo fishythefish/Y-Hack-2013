@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(AudioSource),typeof(CharacterController))]
+[RequireComponent(typeof(AudioSource),typeof(CharacterController),typeof(OVRCameraController))]
 public class MicrophoneInput : MonoBehaviour {
 	
 	private byte[][] map = new byte[][] {
@@ -9,6 +9,7 @@ public class MicrophoneInput : MonoBehaviour {
 	};
 	
 	private CharacterController controller;
+	private GameObject cameraController;
 	
 	private const int sampleSize = 1024;
 	private const float baseRMS = 0.1f;
@@ -26,6 +27,7 @@ public class MicrophoneInput : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		controller = gameObject.GetComponent<CharacterController>();
+		cameraController = GameObject.Find("CameraLeft");
 		samples = new float[sampleSize];
 		//spectrum = new float[sampleSize];
 		audio.clip = Microphone.Start(null, true, 10, 44100);
@@ -64,15 +66,15 @@ public class MicrophoneInput : MonoBehaviour {
 	
 	private Vector3 Direction() {
 		byte b = map[0][0];
-		float angle = gameObject.transform.eulerAngles.z;
+		float angle = cameraController.transform.eulerAngles.y;
 		if (angle >= 45 && angle < 135) {
-			if ((b & 1) == 1) return new Vector3(0, 0, 10);
+			if ((b & 1) == 1) return new Vector3(10, 0, 0);
 		} else if (angle >= 135 && angle < 225) {
-			if ((b & 2) == 1) return new Vector3(-10, 0, 0);
+			if ((b & 2) == 1) return new Vector3(0, 0, -10);
 		} else if (angle >= 225 && angle < 315) {
-			if ((b & 4) == 1) return new Vector3(0, 0, -10);
+			if ((b & 4) == 1) return new Vector3(-10, 0, 0);
 		} else if (angle >= 315 || angle < 45) {
-			if ((b & 8) == 1) return new Vector3(10, 0, 0);
+			if ((b & 8) == 1) return new Vector3(0, 0, 10);
 		}
 		return Vector3.zero;
 	}
