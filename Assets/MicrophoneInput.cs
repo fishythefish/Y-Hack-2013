@@ -5,9 +5,9 @@ using System.Collections;
 public class MicrophoneInput : MonoBehaviour {
 
 	private const int sampleSize = 1024;
-	private const float baseRMS = 0.1f;
+	private const float baseRMS = 0.0001f;
 	private const float amplitudeThreshold = 0.0f;
-	private float RMSvalue;
+	private float RMSValue;
 	private float dBValue;
 	private float pitch;
 	
@@ -30,8 +30,8 @@ public class MicrophoneInput : MonoBehaviour {
 		for (int i = 0; i < sampleSize; i++) {
 			sum += samples[i] * samples[i];
 		}
-		RMSvalue = Mathf.Sqrt(sum / sampleSize);
-		dBValue = 20 * Mathf.Log10(RMSvalue / baseRMS);
+		RMSValue = Mathf.Sqrt(sum / sampleSize);
+		dBValue = 20 * Mathf.Log10(RMSValue / baseRMS);
 		if(dBValue < -160) dBValue = -160;
 		
 		audio.GetSpectrumData(spectrum, 0, FFTWindow.BlackmanHarris);
@@ -55,6 +55,6 @@ public class MicrophoneInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Analyze();
-		Debug.Log("RMS: " + RMSvalue + ", dB: " + dBValue + ", " + pitch + " Hz");
+		Debug.Log("RMS: " + RMSValue);
 	}
 }
