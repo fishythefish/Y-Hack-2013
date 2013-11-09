@@ -1,8 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\MicrophoneFFT.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\MicrophoneTest.cs">
     <Files>
-      <File FileName="Assets\MicrophoneFFT.cs" Line="18" Column="1" />
+      <File FileName="Assets\MicrophoneTest.cs" Line="24" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
