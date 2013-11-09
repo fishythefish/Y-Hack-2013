@@ -5,7 +5,10 @@ using System.Collections;
 public class MicrophoneInput : MonoBehaviour {
 	
 	private byte[][] map = new byte[][] {
-		new byte[] {}
+		new byte[] {12, 14, 14, 6},
+		new byte[] {13, 15, 15, 7},
+		new byte[] {13, 15, 15, 7},
+		new byte[] {9, 11, 11, 3}
 	};
 	
 	private CharacterController controller;
@@ -64,9 +67,10 @@ public class MicrophoneInput : MonoBehaviour {
 		pitch = frequency * 24000 / sampleSize;*/
 	}
 	
-	private Vector3 Direction() {
+	private Vector3 GetDirection() {
 		byte b = map[0][0];
 		float angle = cameraController.transform.eulerAngles.y;
+		Debug.Log (angle);
 		if (angle >= 45 && angle < 135) {
 			if ((b & 1) == 1) return new Vector3(10, 0, 0);
 		} else if (angle >= 135 && angle < 225) {
@@ -82,12 +86,12 @@ public class MicrophoneInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Analyze();
-		Debug.Log("dB: " + dBValue);
-		if ((RMSValue > baseRMS || Input.GetKeyDown(KeyCode.Space)) && !isMoving) {
-			if (!Direction().Equals(Vector3.zero)) {
+		//Debug.Log("dB: " + dBValue);
+		if ((RMSValue > baseRMS || Input.GetKeyDown(KeyCode.J)) && !isMoving) {
+			if (!GetDirection().Equals(Vector3.zero)) {
 				isMoving = true;
 				startTime = Time.time;
-				controller.SimpleMove(Direction());
+				controller.SimpleMove(GetDirection());
 			}
 		}
 		if(isMoving) {
