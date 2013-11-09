@@ -5,6 +5,10 @@ var boolean mouth_was_open = false;
 var boolean mouth_is_open = false;
 var cameraObject : GameObject;
 var move_direction = 0;
+var initial_x : float;
+var initial_z : float;
+initial_x = 0.0;
+initial_z = 0.0;
 
 function Matrix(){
 	this.rows = new Array();
@@ -22,11 +26,19 @@ static function MoveOverTime( theTransform : Transform, d : Vector3, t : float )
 	    yield;
 	    }
 	    theTransform.position = endPosition;
-	    }
+}
 //can I make the matrix const and pass by reference?
 static function move_controller(gameObject : GameObject, direction : int, matrix){
-	    
-	
+	    var x_coord = gameObject.transform.position.x;
+	    var z_coord = gameObject.transform.position.x;
+	    x_coord = (x_coord - initial_x)/3.75;
+	    z_coord = (z_coord - initial_z)/9;
+		var coordinate_direction = matrix[x_coord][z_coord];
+		if ( direction == 1 && (coordinate_direction == 1 || coordinate_direction == 3 || coordinate_direction == 5 || coordinate_direction == 7 || coordinate_direction == 9 || coordinate_direction == 11 || coordinate_direction == 13 || coordinate_direction == 15) ){
+			MoveOverTime( transform, Vector3(0, 0, 9), .5);
+		}else if(direction == 2 && (coordinate_direction == 2 || coordinate_direction == 3 || coordinate_direction == 6 || coordinate_direction == 7 || coordinate_direction == 10 || coordinate_direction == 11 || coordinate_direction == 14 || cordinate_direction == 15) )}
+			MoveOverTime( transform, Vector3(3.75, 0, 0), .5);
+		}else if(direction == 4 && (coordinate_direction == 4 || coordinate_direction == 5 || coordinate_direction == 6 || coordinate_direction == 
 		
 	
 
