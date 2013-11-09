@@ -23,6 +23,8 @@ public class MicrophoneTest : MonoBehaviour {
 		}
 		
 		audio.GetOutputData(samples, 0);
-		Debug.Log (samples[0]);
+		for (int i = 0; i < 1023; i++) {
+			Debug.DrawLine(new Vector3(i, samples[i] * 100, 10), new Vector3(i + 1, samples[i + 1] * 100, 10), Color.blue);
+		}
 	}
 }
