@@ -5,7 +5,7 @@ using System.Collections;
 public class MicrophoneInput : MonoBehaviour {
 
 	private const int sampleSize = 1024;
-	private const float baseRMS = 0.0001f;
+	private const float baseRMS = 0.1f;
 	private const float amplitudeThreshold = 0.0f;
 	private float RMSValue;
 	private float dBValue;
