@@ -8,7 +8,7 @@ public class MicrophoneInput : MonoBehaviour {
 		new byte[] {12,10,10,10,10,14,10,10,10,10,10,6,0,0,12,10,10,10,10,10,14,10,10,10,10,6},
 		new byte[] {5,0,0,0,0,5,0,0,0,0,0,5,0,0,5,0,0,0,0,0,5,0,0,0,0,5},
 		new byte[] {5,0,0,0,0,5,0,0,0,0,0,5,0,0,5,0,0,0,0,0,5,0,0,0,0,5},
-		new byte[] {5,0,0,0,0,5,0,0,0,0,0,13,6,12,7,0,0,0,0,0,5,0,0,0,0,5},
+		new byte[] {5,0,0,0,0,5,0,0,0,0,0,13,14,14,7,0,0,0,0,0,5,0,0,0,0,5},
 		new byte[] {13,10,10,10,10,15,10,10,14,10,10,11,11,11,11,10,10,14,10,10,15,10,10,10,10,7},
 		new byte[] {5,0,0,0,0,5,0,0,5,0,0,0,0,0,0,0,0,5,0,0,5,0,0,0,0,5},
 		new byte[] {5,0,0,0,0,5,0,0,5,0,0,0,0,0,0,0,0,5,0,0,5,0,0,0,0,5},
@@ -50,7 +50,11 @@ public class MicrophoneInput : MonoBehaviour {
 	//private float[] spectrum;
 	
 	private bool isMoving = false;
-	private float startTime;
+	
+	private float lerpPos = 0.0f;
+	private float lerpTime = 1.0f;
+	private Vector3 lerpStart;
+	private Vector3 lerpEnd;
 	
 	// Use this for initialization
 	void Start () {
@@ -96,25 +100,25 @@ public class MicrophoneInput : MonoBehaviour {
 		int[] pos = new int[2];
 		float x = gameObject.transform.position.x;
 		float z = gameObject.transform.position.z;
-		pos[0] = Mathf.RoundToInt((x - 39f) / 3.8f);
+		pos[0] = Mathf.RoundToInt((x - 39f) / 3.8f) + 14;
 		pos[1] = Mathf.RoundToInt((z - 103.5f) / (-3.9f));
 		return pos;
 	}
 	
 	private Vector3 GetDirection() {
 		int[] gridPos = GetGridPosition();
-		Debug.Log (gridPos[0] + ", " + gridPos[1]);
-		byte b = map[gridPos[0]][gridPos[1]];
+		byte b = map[gridPos[1]][gridPos[0]];
+		//Debug.Log (gridPos[0] + ", " + gridPos[1] + ", " + b);
 		float angle = cameraController.transform.eulerAngles.y;
-		//Debug.Log (angle);
+		//Debug.Log (angle + ", " + b + ", " + (b & 8) + ", " + (b & 4) + ", " + (b & 2) + ", " + (b & 1));
 		if (angle >= 45 && angle < 135) {
-			if ((b & 1) == 1) return new Vector3(10, 0, 0);
+			if ((b & 8) == 8) {return new Vector3(3.8f, 0, 0);}
 		} else if (angle >= 135 && angle < 225) {
-			if ((b & 2) == 1) return new Vector3(0, 0, -10);
+			if ((b & 4) == 4) {return new Vector3(0, 0, -3.9f);}
 		} else if (angle >= 225 && angle < 315) {
-			if ((b & 4) == 1) return new Vector3(-10, 0, 0);
+			if ((b & 2) == 2) {return new Vector3(-3.8f, 0, 0);}
 		} else if (angle >= 315 || angle < 45) {
-			if ((b & 8) == 1) return new Vector3(0, 0, 10);
+			if ((b & 1) == 1) {return new Vector3(0, 0, 3.9f);}
 		}
 		return Vector3.zero;
 	}
@@ -124,16 +128,20 @@ public class MicrophoneInput : MonoBehaviour {
 		Analyze();
 		//Debug.Log("dB: " + dBValue);
 		if ((RMSValue > baseRMS || Input.GetKeyDown(KeyCode.J)) && !isMoving) {
-			if (!GetDirection().Equals(Vector3.zero)) {
+			Vector3 direction = GetDirection();
+			//Debug.Log (direction.ToString());
+			if (!direction.Equals(Vector3.zero)) {
 				isMoving = true;
-				startTime = Time.time;
-				controller.SimpleMove(GetDirection());
+				lerpStart = gameObject.transform.position;
+				lerpEnd = lerpStart + direction;
 			}
 		}
-		if(isMoving) {
-			if (Time.time > startTime + 1) {
+		if (isMoving) {
+			lerpPos += Time.deltaTime / lerpTime;
+			gameObject.transform.position = Vector3.Lerp(lerpStart, lerpEnd, lerpPos);
+			if (lerpPos >= 1) {
 				isMoving = false;
-				controller.SimpleMove(new Vector3(0, 0, 0));
+				lerpPos = 0;
 			}
 		}
 	}
