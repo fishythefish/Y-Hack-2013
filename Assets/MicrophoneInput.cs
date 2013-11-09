@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(AudioSource),typeof(CharacterController),typeof(OVRCameraController))]
+[RequireComponent(typeof(AudioSource),typeof(CharacterController))]
 public class MicrophoneInput : MonoBehaviour {
 	
 	private byte[][] map = new byte[][] {
