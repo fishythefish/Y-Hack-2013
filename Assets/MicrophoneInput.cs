@@ -55,6 +55,6 @@ public class MicrophoneInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Analyze();
-		Debug.Log("RMS: " + RMSValue);
+		Debug.Log("dB: " + dBValue);
 	}
 }
