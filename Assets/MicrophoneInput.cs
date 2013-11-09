@@ -67,8 +67,18 @@ public class MicrophoneInput : MonoBehaviour {
 		pitch = frequency * 24000 / sampleSize;*/
 	}
 	
+	private int[] GetGridPosition() {
+		int[] pos = new int[2];
+		float x = gameObject.transform.position.x;
+		float z = gameObject.transform.position.z;
+		pos[0] = Mathf.RoundToInt((x - 39f) / 3.8f);
+		pos[1] = Mathf.RoundToInt((z - 103.5f) / (-3.9f));
+		return pos;
+	}
+	
 	private Vector3 GetDirection() {
-		byte b = map[0][0];
+		int[] gridPos = GetGridPosition();
+		byte b = map[gridPos[0]][gridPos[1]];
 		float angle = cameraController.transform.eulerAngles.y;
 		Debug.Log (angle);
 		if (angle >= 45 && angle < 135) {
