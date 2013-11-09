@@ -78,9 +78,10 @@ public class MicrophoneInput : MonoBehaviour {
 	
 	private Vector3 GetDirection() {
 		int[] gridPos = GetGridPosition();
+		Debug.Log (gridPos[0] + ", " + gridPos[1]);
 		byte b = map[gridPos[0]][gridPos[1]];
 		float angle = cameraController.transform.eulerAngles.y;
-		Debug.Log (angle);
+		//Debug.Log (angle);
 		if (angle >= 45 && angle < 135) {
 			if ((b & 1) == 1) return new Vector3(10, 0, 0);
 		} else if (angle >= 135 && angle < 225) {
