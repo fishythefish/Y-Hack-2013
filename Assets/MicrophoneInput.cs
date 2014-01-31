@@ -126,6 +126,7 @@ public class MicrophoneInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Analyze();
+		Debug.Log ("RMS: " + RMSValue);
 		//Debug.Log("dB: " + dBValue);
 		if ((RMSValue > baseRMS || Input.GetKeyDown(KeyCode.J)) && !isMoving) {
 			Vector3 direction = GetDirection();
